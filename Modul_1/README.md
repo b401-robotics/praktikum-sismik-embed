@@ -23,11 +23,11 @@
     - [C.6 ADC sebagai Mode Akses GPIO Ketiga](#c6-adc-sebagai-mode-akses-gpio-ketiga)
   - [D. Persiapan Sebelum Praktikum](#d-persiapan-sebelum-praktikum)
   - [E. Kegiatan Praktikum](#e-kegiatan-praktikum)
-    - [PERCOBAAN 1 — Pengenalan STM32 Blackpill (Blink)](#percobaan-1--pengenalan-stm32-blackpill-blink)
-    - [PERCOBAAN 2 — Pengenalan ESP32 dengan Framework ESP-IDF (Blink)](#percobaan-2--pengenalan-esp32-dengan-framework-esp-idf-blink)
-    - [PERCOBAAN 3 — Pull-up dan Pull-down: Eksternal vs Internal (ESP32 + Framework Arduino)](#percobaan-3--pull-up-dan-pull-down-eksternal-vs-internal-esp32--framework-arduino)
-    - [PERCOBAAN 4 — Debouncing pada Input Tombol GPIO (ESP32 + Framework Arduino)](#percobaan-4--debouncing-pada-input-tombol-gpio-esp32--framework-arduino)
-    - [PERCOBAAN 5 — Akses GPIO Analog: Pembacaan ADC dengan LDR (ESP32 + Framework Arduino)](#percobaan-5--akses-gpio-analog-pembacaan-adc-dengan-ldr-esp32--framework-arduino)
+    - [PERCOBAAN 1: Pengenalan STM32 Blackpill (Blink)](#percobaan-1-pengenalan-stm32-blackpill-blink)
+    - [PERCOBAAN 2: Pengenalan ESP32 dengan Framework ESP-IDF (Blink)](#percobaan-2-pengenalan-esp32-dengan-framework-esp-idf-blink)
+    - [PERCOBAAN 3: Pull-up dan Pull-down: Eksternal vs Internal (ESP32 + Framework Arduino)](#percobaan-3-pull-up-dan-pull-down-eksternal-vs-internal-esp32--framework-arduino)
+    - [PERCOBAAN 4: Debouncing pada Input Tombol GPIO (ESP32 + Framework Arduino)](#percobaan-4-debouncing-pada-input-tombol-gpio-esp32--framework-arduino)
+    - [PERCOBAAN 5: Akses GPIO Analog: Pembacaan ADC dengan LDR (ESP32 + Framework Arduino)](#percobaan-5-akses-gpio-analog-pembacaan-adc-dengan-ldr-esp32--framework-arduino)
   - [F. Tugas Modul](#f-tugas-modul)
   - [G. Referensi](#g-referensi)
 
@@ -57,11 +57,11 @@ Setelah menyelesaikan Modul 1, praktikan mampu:
 | 4 | Kabel jumper female-female | untuk ST-Link ke Blackpill | 4 |
 | 5 | Kabel USB Micro/USB-C | untuk ST-Link dan ESP32 ke PC | 2 |
 | 6 | Breadboard | 830 titik | 1 |
-| 7 | Kabel jumper male-male | — | secukupnya |
+| 7 | Kabel jumper male-male | - | secukupnya |
 | 8 | LED + resistor 220Ω | untuk uji Blink ESP32 (bila tidak ada LED onboard) | 1 |
 | 9 | Pushbutton (tactile) | untuk pull-up/pull-down eksternal & internal (Percobaan 3) dan debouncing (Percobaan 4) | 2 |
 | 10 | Resistor | 10kΩ, untuk pull-up eksternal, pull-down eksternal (Percobaan 3), dan pembagi tegangan LDR (Percobaan 5) | 3 |
-| 11 | LDR (Light Dependent Resistor) | — | 1 |
+| 11 | LDR (Light Dependent Resistor) | - | 1 |
 | 12 | Laptop/PC | Windows/Mac/Linux, VSCode terinstal | 1 |
 
 ---
@@ -69,26 +69,28 @@ Setelah menyelesaikan Modul 1, praktikan mampu:
 ## C. Dasar Teori
 
 ### C.1 PlatformIO dan VSCode sebagai Lingkungan Pengembangan
-PlatformIO adalah ekosistem pengembangan embedded yang bersifat cross-platform, mendukung ratusan board dan berbagai framework (Arduino, STM32Cube/HAL, ESP-IDF, dll.) dalam satu antarmuka yang seragam. Satu keunggulan penting PlatformIO adalah kemampuannya menjalankan **framework berbeda pada chip yang sama** — misalnya ESP32 dapat diprogram baik menggunakan framework Arduino (sederhana) maupun ESP-IDF (native, lebih mendalam) — cukup dengan mengubah konfigurasi pada `platformio.ini`.
+PlatformIO adalah ekosistem pengembangan embedded yang bersifat cross-platform, mendukung ratusan board dan berbagai framework (Arduino, STM32Cube/HAL, ESP-IDF, dll.) dalam satu antarmuka yang seragam. Satu keunggulan penting PlatformIO adalah kemampuannya menjalankan **framework berbeda pada chip yang sama**, misalnya ESP32 dapat diprogram baik menggunakan framework Arduino (sederhana) maupun ESP-IDF (native, lebih mendalam), cukup dengan mengubah konfigurasi pada `platformio.ini`.
 
 Struktur project PlatformIO terdiri atas:
-- `platformio.ini` — file konfigurasi board, framework, dan upload protocol
-- `src/` — folder berisi kode program utama
-- `include/` — folder header file
-- `lib/` — folder library tambahan
+- `platformio.ini`, file konfigurasi board, framework, dan upload protocol
+- `src/`, folder berisi kode program utama
+- `include/`, folder header file
+- `lib/`, folder library tambahan
 
 ### C.2 STM32 Blackpill dan Framework Arduino
 Blackpill adalah development board berbasis mikrokontroler STM32F401CC (ARM Cortex-M4, 32-bit). Karakteristik utama:
 - CPU ARM Cortex-M4 dengan FPU, clock hingga 84 MHz
 - Memori Flash 256 KB, RAM 64 KB
 - LED onboard di pin **PC13** (aktif LOW), tombol user di pin **PA0**
-- Tidak memiliki programmer onboard — memerlukan **ST-Link** eksternal via protokol **SWD** (SWDIO, SWCLK, GND, 3.3V)
+- Tidak memiliki programmer onboard, memerlukan **ST-Link** eksternal via protokol **SWD** (SWDIO, SWCLK, GND, 3.3V)
 
-STM32 dapat diprogram menggunakan **framework Arduino** (dikenal sebagai **STM32duino**) — lapisan abstraksi yang menyediakan fungsi-fungsi familiar seperti `pinMode()`, `digitalWrite()`, dan `delay()`, sama seperti pada board Arduino/ESP32 pada umumnya. Framework ini memudahkan pemula memulai pemrograman STM32 tanpa perlu memahami detail register/HAL terlebih dahulu — meskipun di balik layar, framework Arduino ini tetap dibangun di atas **HAL (Hardware Abstraction Layer)**, pustaka resmi STMicroelectronics untuk mengakses peripheral.
+STM32 dapat diprogram menggunakan **framework Arduino** (dikenal sebagai **STM32duino**), lapisan abstraksi yang menyediakan fungsi-fungsi familiar seperti `pinMode()`, `digitalWrite()`, dan `delay()`, sama seperti pada board Arduino/ESP32 pada umumnya. Framework ini memudahkan pemula memulai pemrograman STM32 tanpa perlu memahami detail register/HAL terlebih dahulu, meskipun di balik layar, framework Arduino ini tetap dibangun di atas **HAL (Hardware Abstraction Layer)**, pustaka resmi STMicroelectronics untuk mengakses peripheral.
 
 Salah satu ciri khas STM32duino adalah dukungan penamaan pin langsung sesuai label port fisik pada board, misalnya `PC13` atau `PA0`, alih-alih hanya nomor pin generik seperti pada board Arduino biasa.
 
-![Gambar 1: Pinout board STM32 Blackpill (WeAct STM32F401), menunjukkan label PA/PB/PC, LED onboard PC13, dan tombol user](img/pinout_stm32_blackpill.png)
+<!-- ![Gambar 1: Pinout board STM32 Blackpill (WeAct STM32F401), menunjukkan label PA/PB/PC, LED onboard PC13, dan tombol user](..img/pinout_stm32_blackpill.png) -->
+
+<img src="../img/pinout_stm32_blackpill.png" alt="Gambar 1: Pinout board STM32 Blackpill" width="70%">
 
 ### C.3 ESP32 dan Framework ESP-IDF
 ESP32 adalah mikrokontroler 32-bit dual-core (Xtensa LX6) dengan WiFi dan Bluetooth terintegrasi, serta dilengkapi USB-to-Serial bawaan sehingga dapat langsung diprogram melalui kabel USB tanpa programmer eksternal.
@@ -107,11 +109,11 @@ ESP32 adalah mikrokontroler 32-bit dual-core (Xtensa LX6) dengan WiFi dan Blueto
 | Akses fitur RTOS | Tersembunyi/terbatas | Langsung (task, semaphore, queue) |
 
 ### C.4 Konfigurasi Pull-up dan Pull-down Resistor pada Tombol
-Saat sebuah tombol/pushbutton tidak ditekan dan kedua kakinya tidak terhubung ke jalur tegangan mana pun, pin GPIO yang membacanya berada dalam kondisi ***floating*** — nilainya tidak pasti (bisa terbaca HIGH atau LOW secara acak akibat noise). Untuk mengatasi hal ini, pin GPIO perlu "ditarik" (*pulled*) ke salah satu level tegangan tertentu ketika tombol tidak ditekan, menggunakan resistor:
+Saat sebuah tombol/pushbutton tidak ditekan dan kedua kakinya tidak terhubung ke jalur tegangan mana pun, pin GPIO yang membacanya berada dalam kondisi ***floating***, nilainya tidak pasti (bisa terbaca HIGH atau LOW secara acak akibat noise). Untuk mengatasi hal ini, pin GPIO perlu "ditarik" (*pulled*) ke salah satu level tegangan tertentu ketika tombol tidak ditekan, menggunakan resistor:
 - **Pull-up Resistor:** menghubungkan pin GPIO ke VCC (3.3V) melalui resistor (umumnya 10kΩ). Saat tombol tidak ditekan, pin terbaca **HIGH**; saat tombol ditekan (menghubungkan pin ke GND), pin terbaca **LOW**.
-- **Pull-down Resistor:** menghubungkan pin GPIO ke GND melalui resistor. Saat tombol tidak ditekan, pin terbaca **LOW**; saat tombol ditekan (menghubungkan pin ke VCC), pin terbaca **HIGH** — logika ini berkebalikan dengan konfigurasi pull-up.
+- **Pull-down Resistor:** menghubungkan pin GPIO ke GND melalui resistor. Saat tombol tidak ditekan, pin terbaca **LOW**; saat tombol ditekan (menghubungkan pin ke VCC), pin terbaca **HIGH**, logika ini berkebalikan dengan konfigurasi pull-up.
 
-Resistor pull-up/pull-down di atas dapat dipasang secara **eksternal** (komponen resistor fisik pada breadboard), maupun diaktifkan secara **internal** melalui firmware tanpa resistor tambahan. ESP32 menyediakan keduanya pada framework Arduino: `pinMode(pin, INPUT_PULLUP)` untuk pull-up internal, dan `pinMode(pin, INPUT_PULLDOWN)` untuk pull-down internal. Perlu diperhatikan bahwa **tidak semua pin GPIO ESP32 mendukung resistor pull internal** — pin input-only (GPIO 34–39) sama sekali tidak memiliki resistor pull-up/pull-down internal, sehingga wajib menggunakan resistor eksternal jika digunakan sebagai input tombol.
+Resistor pull-up/pull-down di atas dapat dipasang secara **eksternal** (komponen resistor fisik pada breadboard), maupun diaktifkan secara **internal** melalui firmware tanpa resistor tambahan. ESP32 menyediakan keduanya pada framework Arduino: `pinMode(pin, INPUT_PULLUP)` untuk pull-up internal, dan `pinMode(pin, INPUT_PULLDOWN)` untuk pull-down internal. Perlu diperhatikan bahwa **tidak semua pin GPIO ESP32 mendukung resistor pull internal**, pin input-only (GPIO 34–39) sama sekali tidak memiliki resistor pull-up/pull-down internal, sehingga wajib menggunakan resistor eksternal jika digunakan sebagai input tombol.
 
 <img src="../img/skematik_pullup_pulldown_teori.png" alt="Gambar 3: Skematik rangkaian pull-up resistor (GPIO ke VCC via resistor, tombol ke GND) berdampingan dengan pull-down resistor (GPIO ke GND via resistor, tombol ke VCC)" width="70%">
 
@@ -125,15 +127,15 @@ Kontak mekanik pada tombol/saklar menghasilkan beberapa transisi sinyal HIGH-LOW
 *Gambar 4: Grafik sinyal tombol pada osiloskop/logic analyzer yang memperlihatkan bouncing (transisi HIGH-LOW berulang saat kontak menyentuh/lepas), dibandingkan dengan sinyal yang sudah didebounce*
 
 ### C.6 ADC sebagai Mode Akses GPIO Ketiga
-Sejauh ini, GPIO telah digunakan dalam dua mode: **digital output** (Percobaan 1–2, menyalakan LED) dan **digital input** (Percobaan 3–4, membaca status tombol/saklar — hanya mengenal dua kondisi, HIGH atau LOW). Mode ketiga yang juga umum digunakan adalah **analog input**, yaitu membaca tegangan yang berubah secara kontinu (bukan hanya dua kondisi), melalui peripheral **ADC (Analog-to-Digital Converter)**.
+Sejauh ini, GPIO telah digunakan dalam dua mode: **digital output** (Percobaan 1–2, menyalakan LED) dan **digital input** (Percobaan 3–4, membaca status tombol/saklar, hanya mengenal dua kondisi, HIGH atau LOW). Mode ketiga yang juga umum digunakan adalah **analog input**, yaitu membaca tegangan yang berubah secara kontinu (bukan hanya dua kondisi), melalui peripheral **ADC (Analog-to-Digital Converter)**.
 
-ADC mengubah tegangan analog pada suatu pin menjadi nilai digital yang dapat diolah program. ESP32 memiliki ADC internal dengan resolusi default **12-bit** (rentang nilai 0–4095) dan referensi tegangan sekitar **0–3.3V**, diakses melalui fungsi `analogRead(pin)` pada framework Arduino. Perlu diperhatikan bahwa **tidak semua pin GPIO mendukung ADC** — pada ESP32, pin yang mendukung ADC1 (mis. GPIO32–39) lebih disarankan digunakan dibanding ADC2, karena ADC2 memiliki keterbatasan saat modul WiFi sedang aktif.
+ADC mengubah tegangan analog pada suatu pin menjadi nilai digital yang dapat diolah program. ESP32 memiliki ADC internal dengan resolusi default **12-bit** (rentang nilai 0–4095) dan referensi tegangan sekitar **0–3.3V**, diakses melalui fungsi `analogRead(pin)` pada framework Arduino. Perlu diperhatikan bahwa **tidak semua pin GPIO mendukung ADC**, pada ESP32, pin yang mendukung ADC1 (mis. GPIO32–39) lebih disarankan digunakan dibanding ADC2, karena ADC2 memiliki keterbatasan saat modul WiFi sedang aktif.
 
 > **Catatan:** Percobaan ADC pada modul ini hanya memperkenalkan *cara mengakses* GPIO sebagai input analog menggunakan satu sensor sederhana (LDR). Pembahasan lebih lanjut mengenai klasifikasi sensor berdasarkan basis pengukurannya (resistif, kapasitif, induktif, dan basis lain) beserta ragam sensor/aktuator lain akan dibahas lebih mendalam pada **Modul 2**.
 
-<img src="../img/modul_ldr_pembagi_tegangan.png" alt="Gambar 5: Foto komponen LDR (Light Dependent Resistor) — dirangkai sebagai pembagi tegangan bersama resistor 10kΩ pada Percobaan 5" width="45%">
+<img src="../img/modul_ldr_pembagi_tegangan.png" alt="Gambar 5: Foto komponen LDR (Light Dependent Resistor), dirangkai sebagai pembagi tegangan bersama resistor 10kΩ pada Percobaan 5" width="45%">
 
-*Gambar 5: Foto komponen LDR (Light Dependent Resistor) — dirangkai sebagai pembagi tegangan bersama resistor 10kΩ pada Percobaan 5*
+*Gambar 5: Foto komponen LDR (Light Dependent Resistor), dirangkai sebagai pembagi tegangan bersama resistor 10kΩ pada Percobaan 5*
 
 ---
 
@@ -143,18 +145,18 @@ Instalasi Visual Studio Code, ekstensi PlatformIO, cara membuat project baru, me
 
 Sebelum memulai kegiatan praktikum:
 1. Siapkan board STM32 Blackpill + ST-Link, dan board ESP32 DevKit, namun **jangan disambungkan terlebih dahulu** sebelum instruksi pada masing-masing percobaan
-2. Buat **satu** project PlatformIO untuk seluruh Modul 1 (mis. Name: `modul1-praktikum`; Board & Framework saat pembuatan awal bebas dipilih, karena akan diganti lewat `platformio.ini` sesuai kebutuhan tiap Percobaan). **Gunakan project yang sama ini untuk Percobaan 1–5** — jangan membuat project baru di setiap Percobaan. Setiap Percobaan cukup mengganti isi `platformio.ini` (lihat heading **`platformio.ini`** pada masing-masing Percobaan) serta isi `src/main.cpp`/`src/main.c` sesuai kode program yang bersangkutan
+2. Buat **satu** project PlatformIO untuk seluruh Modul 1 (mis. Name: `modul1-praktikum`; Board & Framework saat pembuatan awal bebas dipilih, karena akan diganti lewat `platformio.ini` sesuai kebutuhan tiap Percobaan). **Gunakan project yang sama ini untuk Percobaan 1–5**, jangan membuat project baru di setiap Percobaan. Setiap Percobaan cukup mengganti isi `platformio.ini` (lihat heading **`platformio.ini`** pada masing-masing Percobaan) serta isi `src/main.cpp`/`src/main.c` sesuai kode program yang bersangkutan
 
 ---
 
 ## E. Kegiatan Praktikum
 
-### PERCOBAAN 1 — Pengenalan STM32 Blackpill (Blink)
+### PERCOBAAN 1: Pengenalan STM32 Blackpill (Blink)
 
 **Tujuan:**
 Mahasiswa mampu memahami arsitektur board STM32 Blackpill, dan berhasil melakukan flashing program Blink menggunakan ST-Link (framework Arduino).
 
-> Percobaan ini tidak memerlukan rangkaian tambahan — cukup gunakan LED onboard (PC13) dan koneksi ST-Link.
+> Percobaan ini tidak memerlukan rangkaian tambahan, cukup gunakan LED onboard (PC13) dan koneksi ST-Link.
 
 **`platformio.ini`:**
 ```ini
@@ -165,7 +167,7 @@ framework = arduino
 upload_protocol = stlink
 debug_tool = stlink
 ```
-> **Catatan:** Setiap kali isi `platformio.ini` diganti (termasuk pada Percobaan-Percobaan berikutnya di modul ini), PlatformIO akan otomatis melakukan *refresh*/re-index konfigurasi project — proses ini butuh beberapa saat (terlihat pada status bar VSCode bagian bawah). **Tunggu hingga proses tersebut selesai** sebelum menekan Build/Upload, agar tidak gagal atau tanpa sadar masih memakai konfigurasi lama.
+> **Catatan:** Setiap kali isi `platformio.ini` diganti (termasuk pada Percobaan-Percobaan berikutnya di modul ini), PlatformIO akan otomatis melakukan *refresh*/re-index konfigurasi project, proses ini butuh beberapa saat (terlihat pada status bar VSCode bagian bawah). **Tunggu hingga proses tersebut selesai** sebelum menekan Build/Upload, agar tidak gagal atau tanpa sadar masih memakai konfigurasi lama.
 
 **Langkah Kerja:**
 1. Pastikan project Modul 1 sudah dibuat (Bagian D) dan isi `platformio.ini` sama seperti di atas
@@ -206,18 +208,18 @@ void loop()
 | Baris | Penjelasan |
 |---|---|
 | `#define LED_PIN PC13` | Framework Arduino pada STM32 (STM32duino) mendukung penamaan pin langsung sesuai label port fisik pada board, tanpa perlu mengonfigurasi struct `GPIO_InitTypeDef` seperti pada HAL |
-| `pinMode(LED_PIN, OUTPUT)` | Mengonfigurasi pin sebagai output digital — clock peripheral GPIO diaktifkan otomatis oleh framework di balik layar |
+| `pinMode(LED_PIN, OUTPUT)` | Mengonfigurasi pin sebagai output digital, clock peripheral GPIO diaktifkan otomatis oleh framework di balik layar |
 | `digitalWrite(LED_PIN, LOW/HIGH)` | Mengatur level tegangan pin; karena LED onboard Blackpill aktif LOW, nilai `LOW` berarti menyala |
 | `delay(500)` | Fungsi delay standar Arduino, satuan milidetik |
 
 ---
 
-### PERCOBAAN 2 — Pengenalan ESP32 dengan Framework ESP-IDF (Blink)
+### PERCOBAAN 2: Pengenalan ESP32 dengan Framework ESP-IDF (Blink)
 
 **Tujuan:**
 Mahasiswa mampu memahami arsitektur ESP32 dan struktur program berbasis ESP-IDF, serta berhasil menjalankan program Blink menggunakan framework tersebut.
 
-> Percobaan ini tidak memerlukan rangkaian tambahan — cukup gunakan LED onboard ESP32.
+> Percobaan ini tidak memerlukan rangkaian tambahan, cukup gunakan LED onboard ESP32.
 
 **`platformio.ini`:**
 ```ini
@@ -226,7 +228,7 @@ platform = espressif32
 board = esp32dev
 framework = espidf
 ```
-> **Catatan:** Mengganti isi `platformio.ini` di atas akan memicu proses *refresh* konfigurasi PlatformIO — tunggu hingga selesai (lihat catatan pada Percobaan 1) sebelum Build/Upload.
+> **Catatan:** Mengganti isi `platformio.ini` di atas akan memicu proses *refresh* konfigurasi PlatformIO, tunggu hingga selesai (lihat catatan pada Percobaan 1) sebelum Build/Upload.
 
 **Langkah Kerja:**
 1. Ganti isi `platformio.ini` dengan konfigurasi di atas (board ESP32 DevKit, framework ESP-IDF)
@@ -263,11 +265,11 @@ void app_main(void)
 | `app_main(void)` | Titik masuk program pada ESP-IDF, setara dengan `setup()+loop()` pada Arduino, namun berjalan sebagai task FreeRTOS |
 | `gpio_set_direction()` | Mengatur arah pin (output), analog dengan `pinMode()` pada Arduino |
 | `gpio_set_level()` | Mengatur level tegangan pin, analog dengan `digitalWrite()` |
-| `vTaskDelay(pdMS_TO_TICKS(500))` | Delay berbasis FreeRTOS tick, bukan `delay()` biasa — tidak memblokir task lain |
+| `vTaskDelay(pdMS_TO_TICKS(500))` | Delay berbasis FreeRTOS tick, bukan `delay()` biasa, tidak memblokir task lain |
 
 ---
 
-### PERCOBAAN 3 — Pull-up dan Pull-down: Eksternal vs Internal (ESP32 + Framework Arduino)
+### PERCOBAAN 3: Pull-up dan Pull-down: Eksternal vs Internal (ESP32 + Framework Arduino)
 
 **Tujuan:**
 Mahasiswa mampu memahami, mengimplementasikan, dan membandingkan pembacaan tombol menggunakan resistor pull-up/pull-down yang dipasang secara **eksternal** maupun diaktifkan secara **internal** pada ESP32 dengan framework Arduino, menggunakan 2 pushbutton yang sama untuk kedua kondisi.
@@ -279,9 +281,9 @@ platform = espressif32
 board = esp32dev
 framework = arduino
 ```
-> **Catatan:** Mengganti isi `platformio.ini` di atas akan memicu proses *refresh* konfigurasi PlatformIO — tunggu hingga selesai (lihat catatan pada Percobaan 1) sebelum Build/Upload.
+> **Catatan:** Mengganti isi `platformio.ini` di atas akan memicu proses *refresh* konfigurasi PlatformIO, tunggu hingga selesai (lihat catatan pada Percobaan 1) sebelum Build/Upload.
 
-**Skema Rangkaian — Bagian A (Pull-up/Pull-down Eksternal):**
+**Skema Rangkaian, Bagian A (Pull-up/Pull-down Eksternal):**
 
 | Komponen | Pin ESP32 | Keterangan |
 |---|---|---|
@@ -292,14 +294,14 @@ framework = arduino
 
 *Gambar 6: Diagram wiring dua pushbutton dengan resistor pull-up dan pull-down eksternal ke GPIO 32 dan 33 ESP32*
 
-**Skema Rangkaian — Bagian B (Pull-up/Pull-down Internal, tanpa resistor):**
+**Skema Rangkaian, Bagian B (Pull-up/Pull-down Internal, tanpa resistor):**
 
 Pada pushbutton tactile, gunakan pasangan kaki yang benar seperti pada Gambar 8 dan Gambar 9.
 
 | Komponen | Pin ESP32 | Keterangan |
 |---|---|---|
-| Pushbutton 1 (pull-up internal) | GPIO 32 | Satu kaki ke GPIO, kaki lain ke GND — gunakan `INPUT_PULLUP` internal, resistor eksternal dilepas |
-| Pushbutton 2 (pull-down internal) | GPIO 33 | Satu kaki ke GPIO, kaki lain ke 3.3V — gunakan `INPUT_PULLDOWN` internal, resistor eksternal dilepas |
+| Pushbutton 1 (pull-up internal) | GPIO 32 | Satu kaki ke GPIO, kaki lain ke GND, gunakan `INPUT_PULLUP` internal, resistor eksternal dilepas |
+| Pushbutton 2 (pull-down internal) | GPIO 33 | Satu kaki ke GPIO, kaki lain ke 3.3V, gunakan `INPUT_PULLDOWN` internal, resistor eksternal dilepas |
 
 <img src="../img/skematik_pullup_pulldown_internal.png" alt="Gambar 7: Diagram wiring dua pushbutton tanpa resistor eksternal (memanfaatkan pull-up/pull-down internal ESP32) ke GPIO 32 dan 33" width="60%">
 
@@ -373,14 +375,14 @@ void loop() {
 **Penjelasan Kode:**
 | Bagian | Penjelasan |
 |---|---|
-| Kode A — `pinMode(pin, INPUT)` | Kedua pin dikonfigurasi sebagai input biasa tanpa mengaktifkan pull-up/pull-down internal ESP32, karena resistor sudah dipasang secara eksternal pada rangkaian |
-| Kode B — `pinMode(pin, INPUT_PULLUP/INPUT_PULLDOWN)` | Mengaktifkan resistor pull-up/pull-down **internal** ESP32 pada pin yang sama, sehingga resistor eksternal tidak lagi diperlukan |
-| `stateUp == LOW` | Kondisi default pull-up (tidak ditekan) adalah HIGH karena pin ditarik ke 3.3V; saat ditekan, pin terhubung ke GND sehingga terbaca LOW — berlaku sama pada Kode A maupun Kode B |
-| `stateDown == HIGH` | Kondisi default pull-down (tidak ditekan) adalah LOW karena pin ditarik ke GND; saat ditekan, pin terhubung ke 3.3V sehingga terbaca HIGH — kebalikan dari pull-up, berlaku sama pada Kode A maupun Kode B |
+| Kode A, `pinMode(pin, INPUT)` | Kedua pin dikonfigurasi sebagai input biasa tanpa mengaktifkan pull-up/pull-down internal ESP32, karena resistor sudah dipasang secara eksternal pada rangkaian |
+| Kode B, `pinMode(pin, INPUT_PULLUP/INPUT_PULLDOWN)` | Mengaktifkan resistor pull-up/pull-down **internal** ESP32 pada pin yang sama, sehingga resistor eksternal tidak lagi diperlukan |
+| `stateUp == LOW` | Kondisi default pull-up (tidak ditekan) adalah HIGH karena pin ditarik ke 3.3V; saat ditekan, pin terhubung ke GND sehingga terbaca LOW, berlaku sama pada Kode A maupun Kode B |
+| `stateDown == HIGH` | Kondisi default pull-down (tidak ditekan) adalah LOW karena pin ditarik ke GND; saat ditekan, pin terhubung ke 3.3V sehingga terbaca HIGH, kebalikan dari pull-up, berlaku sama pada Kode A maupun Kode B |
 
 ---
 
-### PERCOBAAN 4 — Debouncing pada Input Tombol GPIO (ESP32 + Framework Arduino)
+### PERCOBAAN 4: Debouncing pada Input Tombol GPIO (ESP32 + Framework Arduino)
 
 **Tujuan:**
 Mahasiswa mampu mengidentifikasi permasalahan bouncing pada tombol mekanik dan mengimplementasikan debouncing berbasis software pada ESP32 dengan framework Arduino.
@@ -402,7 +404,7 @@ platform = espressif32
 board = esp32dev
 framework = arduino
 ```
-> Konfigurasi sama seperti Percobaan 3 — bila `platformio.ini` project Anda belum diubah sejak Percobaan 3, langkah ini bisa dilewati (tidak perlu menunggu refresh ulang).
+> Konfigurasi sama seperti Percobaan 3, bila `platformio.ini` project Anda belum diubah sejak Percobaan 3, langkah ini bisa dilewati (tidak perlu menunggu refresh ulang).
 
 **Langkah Kerja:**
 1. Pasang tombol sesuai skema di atas
@@ -472,7 +474,7 @@ void loop() {
 **Penjelasan Kode:**
 | Bagian | Penjelasan |
 |---|---|
-| `counterNoDebounce` | Bertambah langsung setiap kali terdeteksi transisi HIGH→LOW tanpa validasi waktu — merepresentasikan efek bouncing apa adanya |
+| `counterNoDebounce` | Bertambah langsung setiap kali terdeteksi transisi HIGH→LOW tanpa validasi waktu, merepresentasikan efek bouncing apa adanya |
 | `lastDebounceTime = millis()` | Menyimpan waktu (ms) saat terjadi perubahan sinyal (`lastFlickerableState`), sebagai acuan awal periode debounce |
 | `(millis() - lastDebounceTime) > DEBOUNCE_DELAY` | Memastikan sinyal sudah stabil minimal 50ms sebelum `stableState` diperbarui |
 | `counterWithDebounce` | Hanya bertambah saat `stableState` benar-benar berubah menjadi LOW setelah melewati periode debounce |
@@ -480,10 +482,10 @@ void loop() {
 
 ---
 
-### PERCOBAAN 5 — Akses GPIO Analog: Pembacaan ADC dengan LDR (ESP32 + Framework Arduino)
+### PERCOBAAN 5: Akses GPIO Analog: Pembacaan ADC dengan LDR (ESP32 + Framework Arduino)
 
 **Tujuan:**
-Mahasiswa mampu memahami ADC sebagai mode akses GPIO ketiga (analog input) — melengkapi digital output (Percobaan 1–2) dan digital input (Percobaan 3–4) — serta mengimplementasikan pembacaan nilai analog sederhana menggunakan LDR.
+Mahasiswa mampu memahami ADC sebagai mode akses GPIO ketiga (analog input), melengkapi digital output (Percobaan 1–2) dan digital input (Percobaan 3–4), serta mengimplementasikan pembacaan nilai analog sederhana menggunakan LDR.
 
 **Skema Rangkaian:**
 
@@ -502,7 +504,7 @@ platform = espressif32
 board = esp32dev
 framework = arduino
 ```
-> Konfigurasi sama seperti Percobaan 3–4 — bila `platformio.ini` project Anda belum diubah, langkah ini bisa dilewati.
+> Konfigurasi sama seperti Percobaan 3–4, bila `platformio.ini` project Anda belum diubah, langkah ini bisa dilewati.
 
 **Langkah Kerja:**
 1. Pasang LDR bersama resistor sesuai skema, lalu hubungkan titik tengah keduanya ke GPIO 34
@@ -535,7 +537,7 @@ void loop() {
 |---|---|
 | `analogRead(LDR_PIN)` | Membaca nilai ADC 12-bit (0–4095) pada pin yang terhubung ke titik tengah pembagi tegangan LDR |
 | `voltage = raw * (3.3 / 4095.0)` | Mengonversi nilai digital ADC menjadi perkiraan tegangan aktual |
-| GPIO 34 | Salah satu pin input-only pada ESP32 klasik yang mendukung ADC1 — lebih disarankan dibanding ADC2, terutama saat WiFi aktif |
+| GPIO 34 | Salah satu pin input-only pada ESP32 klasik yang mendukung ADC1, lebih disarankan dibanding ADC2, terutama saat WiFi aktif |
 
 ---
 
@@ -543,23 +545,23 @@ void loop() {
 
 **Matrix Pushbutton 3x3 Mengendalikan Matrix LED 3x3:**
 
-Buatlah simulasi untuk Matrix Pushbutton 3x3 yang mengendalikan Matrix LED 3x3, dimana tombol pada posisi (baris, kolom) tertentu menyalakan LED pada posisi yang sama — mis. tombol baris 1 kolom 1 menyalakan LED baris 1 kolom 1. Program **wajib menerapkan debouncing** pada setiap tombol (mengacu pada Percobaan 4), sehingga LED hanya berubah status setelah pembacaan tombol benar-benar stabil, bukan langsung mengikuti setiap perubahan sinyal mentah yang masih mungkin bouncing.
+Buatlah simulasi untuk Matrix Pushbutton 3x3 yang mengendalikan Matrix LED 3x3, dimana tombol pada posisi (baris, kolom) tertentu menyalakan LED pada posisi yang sama, mis. tombol baris 1 kolom 1 menyalakan LED baris 1 kolom 1. Program **wajib menerapkan debouncing** pada setiap tombol (mengacu pada Percobaan 4), sehingga LED hanya berubah status setelah pembacaan tombol benar-benar stabil, bukan langsung mengikuti setiap perubahan sinyal mentah yang masih mungkin bouncing.
 
-- Kumpulkan tangkapan layar dari hasil simulasi beserta source code-nya. Simulasi dapat dilakukan pada website seperti Wokwi (rekomendasi) atau Cirkit.
+- Kumpulkan tangkapan layar dari hasil simulasi beserta source code-nya. (Simulasi dapat dilakukan menggunakan wokwi, cirkit, thinkercad, atau aplikasi simulasi lain yang mendukung mikrokontroler ESP32).
 
 **Pertanyaan Analisis:**
-1. Analisis mengapa debouncing tetap diperlukan pada rangkaian matrix pushbutton ini, walaupun pada satu waktu hanya satu tombol yang biasanya ditekan — kaitkan dengan penyebab bouncing pada C.5 Debouncing
-2. Analisis konfigurasi pull-up atau pull-down (sesuai rancangan Anda) yang digunakan pada pembacaan kolom tombol — apa kondisi (HIGH/LOW) pin tersebut saat tombol **tidak** ditekan, dan mengapa kondisi tersebut tidak boleh dibiarkan *floating*?
-3. Andaikan salah satu LED pada matrix ini digantikan dengan LDR yang dibaca melalui ADC (seperti Percobaan 5), analisis perbedaan mendasar antara membaca GPIO sebagai **digital input** (tombol, hanya HIGH/LOW) dan sebagai **analog input** (ADC) — mengapa ADC dapat merepresentasikan lebih dari dua kondisi?
+1. Analisis mengapa debouncing tetap diperlukan pada rangkaian matrix pushbutton ini, walaupun pada satu waktu hanya satu tombol yang biasanya ditekan, kaitkan dengan penyebab bouncing pada C.5 Debouncing
+2. Analisis konfigurasi pull-up atau pull-down (sesuai rancangan Anda) yang digunakan pada pembacaan kolom tombol, apa kondisi (HIGH/LOW) pin tersebut saat tombol **tidak** ditekan, dan mengapa kondisi tersebut tidak boleh dibiarkan *floating*?
+3. Andaikan salah satu LED pada matrix ini digantikan dengan LDR yang dibaca melalui ADC (seperti Percobaan 5), analisis perbedaan mendasar antara membaca GPIO sebagai **digital input** (tombol, hanya HIGH/LOW) dan sebagai **analog input** (ADC), mengapa ADC dapat merepresentasikan lebih dari dua kondisi?
 
 
 ---
 
 ## G. Referensi
 1. STMicroelectronics, *STM32F4 Reference Manual (RM0383/RM0368)*
-2. STMicroelectronics, *UM1724 — ST-Link/V2 User Manual*
-3. STM32duino, *Arduino Core for STM32 — Documentation*, https://github.com/stm32duino/Arduino_Core_STM32
+2. STMicroelectronics, *UM1724, ST-Link/V2 User Manual*
+3. STM32duino, *Arduino Core for STM32, Documentation*, https://github.com/stm32duino/Arduino_Core_STM32
 4. Espressif Systems, *ESP-IDF Programming Guide*, https://docs.espressif.com/
 5. PlatformIO Documentation, https://docs.platformio.org/
 6. Arduino Official Documentation, https://docs.arduino.cc/
-7. Espressif Systems, *Arduino-ESP32 Core Documentation — Analog (ADC)*, https://docs.espressif.com/projects/arduino-esp32/
+7. Espressif Systems, *Arduino-ESP32 Core Documentation, Analog (ADC)*, https://docs.espressif.com/projects/arduino-esp32/
