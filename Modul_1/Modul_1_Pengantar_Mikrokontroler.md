@@ -491,7 +491,7 @@ Mahasiswa mampu memahami ADC sebagai mode akses GPIO ketiga (analog input), mele
 
 <img src="../img/skematik_pembagi_tegangan_ldr.png" alt="Gambar 11: Skema rangkaian pembagi tegangan LDR pada Percobaan 5 (Vin = 3.3V, R = LDR, Vo ke GPIO 34, dan R1 = resistor 10kΩ ke GND)" width="30%">
 
-*Gambar 11: Skema rangkaian pembagi tegangan LDR pada Percobaan 5 ($V_{\text{in}} = 3.3\text{V}$, $R = \text{LDR}$, $V_o$ ke GPIO 34, dan $R_1 = \text{resistor } 10\text{k}\Omega$ ke GND)*
+*Gambar 11: Skema rangkaian pembagi tegangan LDR pada Percobaan 5 V_in = 3.3V, R = LDR, V_o ke GPIO 34, dan R_1 = resistor 10k ke GND*
 
 **`platformio.ini`:**
 ```ini
