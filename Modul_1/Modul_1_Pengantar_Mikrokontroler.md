@@ -1,10 +1,6 @@
 # MODUL 1
-# PENGANTAR MIKROKONTROLER & DASAR PEMROGRAMAN
+# PENGANTAR MIKROKONTROLER
 
-**Mata Kuliah:** Praktikum Mikrokontroler & Embedded System
-**Alokasi Waktu:** 5 x Percobaan (@ 100–150 menit)
-**Platform:** STM32 Blackpill (Framework Arduino) & ESP32 (Framework ESP-IDF & Arduino)
-**IDE:** VSCode + PlatformIO
 
 ---
 
