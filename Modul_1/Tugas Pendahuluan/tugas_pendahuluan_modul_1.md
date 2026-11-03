@@ -5,4 +5,4 @@
 3. Jelaskan perbedaan kondisi logika (HIGH/LOW) pada konfigurasi **pull-up** dan **pull-down** resistor, baik saat tombol tidak ditekan maupun saat ditekan.
 4. Jelaskan fenomena **bouncing** pada tombol mekanik — mengapa hal ini bisa terjadi — dan sebutkan minimal dua pendekatan untuk mengatasinya.
 5. Bagaimana ADC (Analog-to-Digital Converter) mengubah sinyal analog menjadi nilai digital? Jelaskan pula pengaruh resolusi bit ADC terhadap presisi hasil pembacaan.
-6. Lakukan set-up untuk tools: vscode, ekstensi platform-io, dan ekstensi serial-plotter pada laptop kalian, berikan screenshoot bahwa laptop kalian sudah ter-set-up dengan baik.
+6. Lakukan set-up untuk tools: vscode, ekstensi platform-io (dengan framework esp-idf dan stm32), dan ekstensi serial-plotter pada laptop kalian, berikan screenshoot bahwa laptop kalian sudah ter-set-up dengan baik.
