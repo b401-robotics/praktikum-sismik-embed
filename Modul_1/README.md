@@ -314,9 +314,9 @@ Pada pushbutton tactile, gunakan pasangan kaki yang benar seperti pada Gambar 8 
 **Langkah Kerja:**
 1. Ganti isi `platformio.ini` kembali ke konfigurasi Arduino di atas. Hapus `src/main.c`, lalu buat lagi file `src/main.cpp`
 2. Pasang dua tombol di GPIO 32 dan 33 lengkap dengan resistornya, sesuai Skema Bagian A
-3. Tulis **Kode Program A (Eksternal)** di bawah pada `src/main.cpp`, klik Build dan Upload, lalu coba tekan kedua tombol dan catat hasilnya
+3. Tulis **Kode Program A (Eksternal)** di bawah pada `src/main.cpp`, klik Build dan Upload, lalu coba tekan kedua tombol dan catat hasilnya dari serial monitor.
 4. Lepas kedua resistor sesuai Skema Bagian B (Gambar 7), tombol tetap terpasang. Lihat Gambar 8 dan Gambar 9 untuk memastikan pasangan kaki tombol yang benar
-5. Ganti isi `src/main.cpp` dengan **Kode Program B (Internal)** di bawah, klik Build dan Upload, lalu coba tombol yang sama dan catat hasilnya
+5. Ganti isi `src/main.cpp` dengan **Kode Program B (Internal)** di bawah, klik Build dan Upload, lalu coba tombol yang sama dan catat hasilnya dari serial monitor.
 6. Bandingkan hasil A dan B. Seharusnya sama: pull-up bernilai HIGH saat tidak ditekan dan LOW saat ditekan, pull-down kebalikannya
 7. Jika hasilnya terbalik atau berbeda, periksa apakah kedua resistor sudah benar-benar dilepas
 
