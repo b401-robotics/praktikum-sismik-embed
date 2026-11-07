@@ -406,7 +406,7 @@ framework = arduino
 1. Pasang tombol sesuai skema di atas
 2. Tulis kode di bawah. Kode ini punya dua penghitung: `counterNoDebounce` (tanpa penyaring getaran tombol) dan `counterWithDebounce` (dengan penyaring)
 3. Tekan tombol satu kali, lalu bandingkan nilai kedua penghitung di Serial Monitor
-4. Ulangi dengan cara menekan yang berbeda (cepat dan tegas, lalu pelan dan ragu-ragu). `counterNoDebounce` bisa naik lebih dari 1 untuk satu tekanan, sedangkan `counterWithDebounce` seharusnya naik tepat 1. Jika keduanya terlihat sama, coba tekan lagi karena getaran tombol tidak selalu muncul
+4. Ulangi dengan cara menekan yang berbeda (cepat dan lambat). `counterNoDebounce` bisa naik lebih dari 1 untuk satu tekanan, sedangkan `counterWithDebounce` seharusnya naik tepat 1. Jika keduanya terlihat sama, coba tekan lagi karena getaran tombol tidak selalu muncul
 5. Ubah `DEBOUNCE_DELAY` menjadi `10` (10 ms), klik Build dan Upload, lalu tekan tombol lagi
 6. Ubah menjadi `200` (200 ms), klik Build dan Upload, lalu tekan tombol dengan cepat berulang kali
 7. Bandingkan ketiga nilai (10, 50, dan 200 ms). Analisis untung ruginya: makin besar nilainya makin bersih dari getaran, tetapi tombol makin lambat merespons
