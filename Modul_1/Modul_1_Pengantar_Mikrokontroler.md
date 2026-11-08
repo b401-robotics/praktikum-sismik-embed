@@ -165,6 +165,10 @@ debug_tool = stlink
 ```
 > **Catatan:** Setiap kali isi `platformio.ini` diganti (termasuk pada Percobaan-Percobaan berikutnya di modul ini), PlatformIO akan otomatis melakukan *refresh*/re-index konfigurasi project, proses ini butuh beberapa saat (terlihat pada status bar VSCode bagian bawah). **Tunggu hingga proses tersebut selesai** sebelum menekan Build/Upload, agar tidak gagal atau tanpa sadar masih memakai konfigurasi lama.
 
+<img src="../img/modul_stlink_v2.png" alt="ST-LINK" width="20%">
+
+*ST-LINK*
+
 **Langkah Kerja:**
 1. Pastikan project Modul 1 sudah dibuat (Bagian D) dan isi `platformio.ini` sama seperti di atas
 2. Hubungkan ST-Link ke Blackpill dengan kabel, lalu colokkan ST-Link ke komputer lewat USB. Cocokkan nama pinnya, karena letak pin ST-Link bisa berbeda-beda:
@@ -548,7 +552,7 @@ Buatlah simulasi untuk Matrix Pushbutton 3x3 yang mengendalikan Matrix LED 3x3, 
 **Pertanyaan Analisis:**
 1. Analisis mengapa debouncing tetap diperlukan pada rangkaian matrix pushbutton ini, walaupun pada satu waktu hanya satu tombol yang biasanya ditekan, kaitkan dengan penyebab bouncing pada C.5 Debouncing
 2. Analisis konfigurasi pull-up atau pull-down (sesuai rancangan Anda) yang digunakan pada pembacaan kolom tombol, apa kondisi (HIGH/LOW) pin tersebut saat tombol **tidak** ditekan, dan mengapa kondisi tersebut tidak boleh dibiarkan *floating*?
-3. Andaikan salah satu LED pada matrix ini digantikan dengan LDR yang dibaca melalui ADC (seperti Percobaan 5), analisis perbedaan mendasar antara membaca GPIO sebagai **digital input** (tombol, hanya HIGH/LOW) dan sebagai **analog input** (ADC), mengapa ADC dapat merepresentasikan lebih dari dua kondisi?
+3. Andaikan salah satu Tombol pada matrix ini digantikan dengan LDR yang dibaca melalui ADC (seperti Percobaan 5), analisis perbedaan mendasar antara membaca GPIO sebagai **digital input** (tombol, hanya HIGH/LOW) dan sebagai **analog input** (ADC), mengapa ADC dapat merepresentasikan lebih dari dua kondisi?
 
 
 ---
