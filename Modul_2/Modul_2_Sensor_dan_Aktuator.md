@@ -758,13 +758,17 @@ board = esp32dev
 framework = arduino
 ```
 
-> **Catatan:** Percobaan ini **tidak memerlukan** library ESP32Servo — sinyal PWM 50Hz untuk ESC dibangkitkan langsung melalui API **LEDC** (`ledcSetup`/`ledcAttachPin`/`ledcWrite`), sebagai kontras dengan pendekatan Percobaan 5 (Servo) yang menggunakan abstraksi library. Keduanya menghasilkan sinyal yang identik (pulsa 1000–2000µs pada periode 20ms) — hanya berbeda pada tingkat abstraksi API yang dipakai.
+<img src="../img/peringatan_bldc.png" alt="Gambar 15: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC" width="40%">
+
+*Gambar 15: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC*
 
 **Langkah Kerja:**
-1. Pastikan baling-baling (*propeller*) **sudah dilepas** dari motor brushless, lalu rangkai ESC dan motor ke ESP32 sesuai skema di atas (pastikan switch daya 12V eksternal di modul masih dalam posisi mati/OFF)
+1. Rangkai ESC dan motor ke ESP32 sesuai skema di atas (pastikan switch daya 12V eksternal di modul masih dalam posisi mati/OFF)
 2. Tulis kode program di bawah pada `src/main.cpp`, lalu klik **Build** dan **Upload**
-3. Buka Serial Monitor (`115200` baud). Saat muncul pesan *"Sekarang nyalakan PSU ESC"*, nyalakan switch daya 12V eksternal di modul dan tunggu hingga terdengar bunyi *beep* arming selesai
-4. Amati perubahan kecepatan putar motor brushless saat nilai PWM naik dari 0 ke 128 dan turun kembali dari 128 ke 0 sesuai keluaran pada Serial Monitor
+3. Cabut kabel USB dari ESP32
+4. Pastikan PIN VIN dan GND ESP32 terpasang pada ESC.
+5. Nyalakan power eksternal dari modul
+4. Amati perubahan kecepatan putar motor brushless saat nilai PWM naik dari 0 ke 128 dan turun kembali dari 128 ke 0 
 
 > **Mengapa urutan ini penting:** Jeda 5 detik pada kode dimulai saat ESP32 reboot, bukan saat daya ESC dinyalakan. Jika switch daya 12V eksternal baru dinyalakan setelah jeda berakhir, `loop()` sudah mulai menaikkan sinyal throttle di atas 1000µs sehingga ESC akan menolak arming demi keamanan. Bila jeda terlewat, matikan switch daya 12V eksternal, tekan tombol EN/Reset pada ESP32, lalu nyalakan kembali switch daya 12V eksternal saat pesan *"Sekarang nyalakan PSU ESC"* muncul.
 
@@ -817,7 +821,7 @@ void setup() {
 
 void loop() {
   // Naik bertahap dari 0 ke 128 PWM
-  for (int pwm = 0; pwm <= MAX_PWM_TEST; pwm += 4) {
+  for (int pwm = 0; pwm <= MAX_PWM_TEST; pwm += 1) {
     setThrottlePWM(pwm);
     delay(100);
   }
@@ -825,7 +829,7 @@ void loop() {
   delay(500);
 
   // Turun bertahap dari 128 ke 0 PWM
-  for (int pwm = MAX_PWM_TEST; pwm >= 0; pwm -= 4) {
+  for (int pwm = MAX_PWM_TEST; pwm >= 0; pwm -= 1) {
     setThrottlePWM(pwm);
     delay(100);
   }
