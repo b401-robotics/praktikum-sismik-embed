@@ -760,7 +760,7 @@ framework = arduino
 
 <img src="../img/peringatan_bldc.png" alt="Gambar 15: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC" width="40%">
 
-*Gambar 15: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC*
+*Gambar 15: Peringatan keselamatan*
 
 **Langkah Kerja:**
 1. Rangkai ESC dan motor ke ESP32 sesuai skema di atas (pastikan switch daya 12V eksternal di modul masih dalam posisi mati/OFF)
