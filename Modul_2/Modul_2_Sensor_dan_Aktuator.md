@@ -273,7 +273,7 @@ Mahasiswa mampu mengimplementasikan pembacaan sensor ultrasonik (basis akustik) 
 | Komponen | Pin ESP32 | Keterangan |
 |---|---|---|
 | HC-SR04 — Trig | GPIO 5 | Output dari ESP32 ke sensor |
-| HC-SR04 — Echo | GPIO 18 | Input ke ESP32; gunakan pembagi tegangan bila level Echo 5V (contoh: 1kΩ seri dari Echo ke GPIO, 2kΩ dari GPIO ke GND) |
+| HC-SR04 — Echo | GPIO 18 | Input ke ESP32 |
 | HC-SR04 — VCC / GND | 5V / GND | Kebanyakan modul HC-SR04 membutuhkan suplai 5V |
 | Sensor IR obstacle — OUT | GPIO 19 | Output digital (umumnya aktif LOW saat objek terdeteksi) |
 | Sensor IR obstacle — VCC / GND | 3.3V / GND | Sesuai datasheet modul |
@@ -297,7 +297,6 @@ monitor_speed = 115200
 3. Buka Serial Monitor (`115200` baud)
 4. Dekatkan dan jauhkan objek di depan kedua sensor, lalu amati pembacaan jarak (cm) dari HC-SR04 serta status deteksi dari sensor IR obstacle pada Serial Monitor
 
-> **Catatan level tegangan:** Satukan GND HC-SR04 dan ESP32. Banyak modul HC-SR04 mengeluarkan Echo 5V. ESP32 yang tetap bekerja saat Echo dihubungkan langsung belum tentu rusak saat itu juga, tetapi level 5V berada di luar batas input GPIO ESP32 dan dapat merusak atau mengurangi keandalan pin. Gunakan pembagi tegangan seperti contoh pada tabel, kecuali datasheet modul yang digunakan memastikan Echo berlevel 3.3V. Batas maksimum input ESP32 klasik adalah 3.6V ([datasheet Espressif](https://documentation.espressif.com/esp32_datasheet_en.html)).
 
 **Kode Program (Ultrasonik HC-SR04 & IR Obstacle):**
 ```cpp
