@@ -370,7 +370,7 @@ Mahasiswa mampu mengimplementasikan kontrol kecepatan dan arah putar motor DC me
 |---|---|---|
 | Joystick KY-023 — VRx | GPIO 34 | Kecepatan & arah (sama seperti Percobaan 1) |
 | Joystick KY-023 — SW | GPIO 27 | Stop darurat, aktif LOW (`INPUT_PULLUP`) |
-| Joystick KY-023 — VCC / GND | 3.3V / GND | Suplai daya modul joystick |
+| Joystick KY-023 — VCC / GND | 5V / GND | Suplai daya modul joystick |
 | Driver motor L298N — ENA | GPIO 25 | Sinyal PWM kecepatan (lepas jumper ENA pada modul L298N) |
 | Driver motor L298N — IN1 | GPIO 26 | Arah putar motor |
 | Driver motor L298N — IN2 | GPIO 33 | Arah putar motor |
