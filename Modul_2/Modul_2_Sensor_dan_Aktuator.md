@@ -1,8 +1,6 @@
 # MODUL 2
 # SENSOR BERDASARKAN BASIS PENGUKURAN & AKTUATOR MOTOR
 
-> **Catatan:** Modul ini melanjutkan penggunaan ESP32 dengan framework Arduino seperti pada Percobaan 3–5 Modul 1. Langkah instalasi VSCode, PlatformIO, dan driver USB-to-Serial tidak diulang di sini — lihat **[setup_vscode_platformio.md](setup_vscode_platformio.md)**.
-
 ---
 
 ## Daftar Isi
@@ -49,27 +47,19 @@ Setelah menyelesaikan Modul 2, praktikan mampu:
 
 ## B. Alat dan Bahan
 
-| No | Nama Komponen | Spesifikasi | Jumlah |
-|---|---|---|---|
-| 1 | Board ESP32 DevKit | ESP32 DevKit v1 | 1 |
-| 2 | Kabel USB Micro/USB-C | untuk ESP32 ke PC | 1 |
-| 3 | Breadboard | 830 titik | 1 |
-| 4 | Kabel jumper male-male | — | secukupnya |
-| 5 | Modul joystick 2-axis KY-023 | Dual potensiometer (VRx/VRy) + tombol tekan (SW) | 1 |
-| 6 | Modul touch sensor TTP223 | Capacitive touch sensor, output digital | 1 |
-| 7 | Hall effect sensor module | mis. A3144/KY-003 | 1 |
-| 8 | Magnet kecil | untuk uji hall effect | 1 |
-| 9 | Sensor ultrasonik | HC-SR04 | 1 |
-| 10 | Sensor IR obstacle | — | 1 |
-| 11 | Motor DC + driver | Motor: JGA25-370 12V (1000RPM), kabel M1 (Merah, +) / M2 (Putih, −); Driver: L298N | 1 |
-| 12 | Motor stepper | 28BYJ-48 (unipolar, 5V) — sesuai kode Percobaan 4 | 1 |
-| 13 | Driver motor stepper | ULN2003 (modul driver 4-fasa bawaan 28BYJ-48) — sesuai kode Percobaan 4 | 1 |
-| 14 | Servo motor | SG90 / MG90S | 1 |
-| 15 | Catu daya eksternal | 12V untuk motor DC dan sesuai kebutuhan stepper (jangan gunakan pin 3.3V ESP32 untuk menyuplai motor) | sesuai kebutuhan |
-| 16 | ESC (Electronic Speed Controller) | ESC brushless 20A (RC hobby) | 1 |
-| 17 | Motor brushless (BLDC) | Motor brushless RC 2200KV, **tanpa propeller/baling-baling terpasang** | 1 |
-| 18 | Baterai LiPo | 2S–3S (7.4V–11.1V), sesuai spesifikasi ESC dan motor | 1 |
-| 19 | Laptop/PC | VSCode + PlatformIO terinstal | 1 |
+- Modul Board Praktikum
+- Adapter 12V 3A
+- Hall Effect Sensor
+- Joystick
+- Touch Sensor 
+- Ultrasonik Sensor
+- Motor DC Brushed + Driver
+- Motor Stepper + Driver
+- Motor Servo
+- Motor BLDC + ESC
+- Obeng
+- Jumper Male-Male 
+- Jumper Male-Female 
 
 ---
 
@@ -166,7 +156,7 @@ Setiap percobaan menggunakan rangkaian tersendiri. Sebelum merakit percobaan ber
 3. Pastikan `platformio.ini` berisi:
    ```ini
    [env:esp32dev]
-   platform = espressif32
+   platform = espressif32@6.5.0
    board = esp32dev
    framework = arduino
    monitor_speed = 115200
@@ -197,8 +187,6 @@ Mahasiswa mampu memahami dan mengimplementasikan pembacaan sensor resistif melal
 | Modul TTP223 — VCC / GND | 3.3V / GND | Sesuai datasheet modul |
 | Hall effect sensor — DO/OUT | GPIO 26 | Output digital (umumnya aktif LOW saat magnet terdeteksi) |
 | Hall effect sensor — VCC / GND | 3.3V / GND | Sesuai datasheet modul |
-
-> **Catatan:** Pin **GPIO 34, 35, 27** yang digunakan joystick pada Percobaan ini sengaja dipertahankan **konsisten** di Percobaan 3 modul ini, karena joystick akan dipakai kembali sebagai input kontrol aktuator pada percobaan tersebut.
 
 <img src="../img/wiring_joystick_touch.png" alt="Gambar 9: Diagram wiring joystick KY-023, modul touch TTP223, dan hall effect sensor ke ESP32" width="60%">
 
@@ -379,14 +367,14 @@ Mahasiswa mampu mengimplementasikan kontrol kecepatan dan arah putar motor DC me
 | Motor DC — M1 (kabel Merah, +) | Driver OUT1 | Menukar M1/M2 membalik arah putar default motor |
 | Motor DC — M2 (kabel Putih, −) | Driver OUT2 | — |
 
-<img src="../img/wiring_motor_dc_l298n.png" alt="Gambar 11: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)" width="60%">
+<img src="../img/wiring_motor_dc_l298n.svg" alt="Gambar 11: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)" width="60%">
 
 *Gambar 11: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)*
 
 **`platformio.ini`:**
 ```ini
 [env:esp32dev]
-platform = espressif32
+platform = espressif32@6.5.0
 board = esp32dev
 framework = arduino
 monitor_speed = 115200
@@ -397,6 +385,7 @@ monitor_speed = 115200
 2. Tulis kode program di bawah pada `src/main.cpp`, lalu klik **Build** dan **Upload**
 3. Buka Serial Monitor (`115200` baud)
 4. Geser joystick ke kiri dan ke kanan serta tekan tombol SW, lalu amati perubahan arah putar, kecepatan motor DC, dan status pada Serial Monitor
+5. Jika kalian menggunakan library ESP32 Arduino Core 3.x, gunakan kode yang ada di folder "Kode_Pendukung/modul_2_percobaan_3.cpp"
 
 **Kode Program (Kontrol Motor DC via Joystick):**
 ```cpp
@@ -527,7 +516,7 @@ Mahasiswa mampu mengimplementasikan kontrol motor stepper 4-fasa melalui driver 
 **`platformio.ini`:**
 ```ini
 [env:esp32dev]
-platform = espressif32
+platform = espressif32@6.5.0
 board = esp32dev
 framework = arduino
 monitor_speed = 115200
@@ -646,14 +635,14 @@ Mahasiswa mampu mengimplementasikan kontrol posisi sudut motor servo menggunakan
 | Servo motor — VCC (kabel Merah) | Pin 5V ESP32 | Daya servo diambil dari pin 5V board (**jangan** gunakan pin 3.3V) |
 | Servo motor — GND (kabel Cokelat/Hitam) | GND ESP32 | — |
 
-<img src="../img/wiring_servo.png" alt="Gambar 13: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)" width="60%">
+<img src="../img/wiring_servo.svg" alt="Gambar 13: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)" width="60%">
 
 *Gambar 13: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)*
 
 **`platformio.ini`:**
 ```ini
 [env:esp32dev]
-platform = espressif32
+platform = espressif32@6.5.0
 board = esp32dev
 framework = arduino
 monitor_speed = 115200
@@ -752,9 +741,10 @@ Mahasiswa mampu memahami prinsip kerja ESC sebagai pengendali motor brushless, s
 **`platformio.ini`:**
 ```ini
 [env:esp32dev]
-platform = espressif32
+platform = espressif32@6.5.0
 board = esp32dev
 framework = arduino
+monitor_speed = 115200
 ```
 
 <img src="../img/peringatan_bldc.png" alt="Gambar 15: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC" width="40%">
