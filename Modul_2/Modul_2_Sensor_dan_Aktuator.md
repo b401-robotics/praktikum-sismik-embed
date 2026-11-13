@@ -509,7 +509,7 @@ Mahasiswa mampu mengimplementasikan kontrol motor stepper 4-fasa melalui driver 
 
 > **Catatan:** Skema ini menggunakan driver stepper 4-fasa (mis. ULN2003 untuk motor stepper 28BYJ-48), sesuai kode program yang mengatur `stepSequence` 4-bit secara langsung — berbeda dari driver STEP/DIR (A4988/DRV8825) yang dibahas pada **C.7 Motor Stepper**. Jika menggunakan driver STEP/DIR, sesuaikan fungsi `setStep()`/`stopMotor()` menjadi pulsa pada pin STEP dan level pada pin DIR.
 
-<img src="../img/wiring_motor_stepper_percobaan4.png" alt="Gambar 12: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal" width="70%">
+<img src="../img/wiring_motor_stepper_percobaan4.svg" alt="Gambar 12: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal" width="70%">
 
 *Gambar 12: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal*
 
@@ -728,10 +728,10 @@ Mahasiswa mampu memahami prinsip kerja ESC sebagai pengendali motor brushless, s
 
 | Komponen | Pin ESP32 / Sumber | Keterangan |
 |---|---|---|
-| ESC — Sinyal PWM (kabel Putih/Kuning/Oranye) | GPIO 25 | Sinyal kontrol dari ESP32 ke ESC, via channel LEDC |
-| ESC — BEC 5V (kabel Merah tengah konektor sinyal) | **Tidak dihubungkan** | Biarkan lepas jika ESP32 sudah mendapat daya dari USB (**jangan** hubungkan ke 3.3V ESP32) |
-| ESC — GND sinyal (kabel Hitam/Cokelat) | GND ESP32 | Disatukan dengan GND ESP32 (**common ground** dengan baterai) |
-| ESC — Power input (+ / −) | Baterai LiPo 2S–3S (7.4V–11.1V) | Jalur daya utama motor, **terpisah** dari power ESP32 |
+| ESC — Sinyal PWM kabel Kuning | GPIO 25 | Sinyal kontrol dari ESP32 ke ESC, via channel LEDC |
+| ESC — 5V kabel Merah | 5V/VIN ESP32 | **jangan** hubungkan ke 3.3V ESP32 |
+| ESC — GND sinyal (kabel Hitam/Cokelat) | GND ESP32 | Disatukan dengan GND ESP32 |
+| ESC — Power input (+ / −) | 12V / GND (dari power eksternal) | Jalur daya utama motor, **terpisah** dari power ESP32 |
 | ESC — 3 kabel fasa output (A, B, C) | 3 kabel Motor Brushless (BLDC) | Menukar 2 dari 3 kabel fasa akan membalik arah putar motor |
 
 <img src="../img/wiring_esc_bldc.png" alt="Gambar 14: Diagram wiring ESC, motor brushless (BLDC), dan baterai ke ESP32" width="60%">
