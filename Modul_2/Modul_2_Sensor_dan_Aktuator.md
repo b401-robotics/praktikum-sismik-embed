@@ -182,20 +182,20 @@ Mahasiswa mampu memahami dan mengimplementasikan pembacaan sensor resistif melal
 | Joystick KY-023 — VRx | GPIO 34 | Output analog sumbu X (ADC1) |
 | Joystick KY-023 — VRy | GPIO 35 | Output analog sumbu Y (ADC1) |
 | Joystick KY-023 — SW | GPIO 27 | Tombol tekan, aktif LOW (gunakan `INPUT_PULLUP`) |
-| Joystick KY-023 — VCC / GND | 3.3V / GND | Sesuai datasheet modul |
+| Joystick KY-023 — VCC / GND | 5V / GND | Sesuai datasheet modul |
 | Modul TTP223 — OUT | GPIO 4 | Output digital, umumnya aktif HIGH saat pad disentuh |
 | Modul TTP223 — VCC / GND | 3.3V / GND | Sesuai datasheet modul |
 | Hall effect sensor — DO/OUT | GPIO 26 | Output digital (umumnya aktif LOW saat magnet terdeteksi) |
 | Hall effect sensor — VCC / GND | 3.3V / GND | Sesuai datasheet modul |
 
-<img src="../img/wiring_joystick_touch.png" alt="Gambar 9: Diagram wiring joystick KY-023, modul touch TTP223, dan hall effect sensor ke ESP32" width="60%">
+<img src="../img/wiring_joystick_touch.svg" alt="Gambar 9: Diagram wiring joystick KY-023, modul touch TTP223, dan hall effect sensor ke ESP32" width="60%">
 
 *Gambar 9: Diagram wiring joystick KY-023, modul touch TTP223, dan hall effect sensor ke ESP32*
 
 **`platformio.ini`:**
 ```ini
 [env:esp32dev]
-platform = espressif32
+platform = espressif32@6.5.0
 board = esp32dev
 framework = arduino
 monitor_speed = 115200
