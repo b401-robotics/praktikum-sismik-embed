@@ -367,9 +367,13 @@ Mahasiswa mampu mengimplementasikan kontrol kecepatan dan arah putar motor DC me
 | Motor DC — M1 (kabel Merah, +) | Driver OUT1 | Menukar M1/M2 membalik arah putar default motor |
 | Motor DC — M2 (kabel Putih, −) | Driver OUT2 | — |
 
-<img src="../img/wiring_motor_dc_l298n.svg" alt="Gambar 11: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)" width="60%">
+<img src="../img/modul_motor_dc_gearbox.png" alt="Gambar 11: Foto motor DC gearbox dengan encoder (kabel daya merah/hitam dan kabel encoder warna-warni)" width="35%">
 
-*Gambar 11: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)*
+*Gambar 11: Foto motor DC gearbox dengan encoder (kabel daya merah/hitam dan kabel encoder warna-warni)*
+
+<img src="../img/wiring_motor_dc_l298n.svg" alt="Gambar 12: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)" width="60%">
+
+*Gambar 12: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)*
 
 **`platformio.ini`:**
 ```ini
@@ -509,9 +513,13 @@ Mahasiswa mampu mengimplementasikan kontrol motor stepper 4-fasa melalui driver 
 
 > **Catatan:** Skema ini menggunakan driver stepper 4-fasa (mis. ULN2003 untuk motor stepper 28BYJ-48), sesuai kode program yang mengatur `stepSequence` 4-bit secara langsung — berbeda dari driver STEP/DIR (A4988/DRV8825) yang dibahas pada **C.7 Motor Stepper**. Jika menggunakan driver STEP/DIR, sesuaikan fungsi `setStep()`/`stopMotor()` menjadi pulsa pada pin STEP dan level pada pin DIR.
 
-<img src="../img/wiring_motor_stepper_percobaan4.svg" alt="Gambar 12: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal" width="70%">
+<img src="../img/modul_motor_stepper_uln2003.png" alt="Gambar 13: Foto motor stepper 28BYJ-48 beserta driver ULN2003" width="40%">
 
-*Gambar 12: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal*
+*Gambar 13: Foto motor stepper 28BYJ-48 beserta driver ULN2003*
+
+<img src="../img/wiring_motor_stepper_percobaan4.svg" alt="Gambar 14: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal" width="70%">
+
+*Gambar 14: Wiring motor stepper 28BYJ-48 via driver ULN2003 ke ESP32 (IN1–IN4 ke GPIO 16, 17, 18, 19) dengan catu daya eksternal*
 
 **`platformio.ini`:**
 ```ini
@@ -635,9 +643,13 @@ Mahasiswa mampu mengimplementasikan kontrol posisi sudut motor servo menggunakan
 | Servo motor — VCC (kabel Merah) | Pin 5V ESP32 | Daya servo diambil dari pin 5V board (**jangan** gunakan pin 3.3V) |
 | Servo motor — GND (kabel Cokelat/Hitam) | GND ESP32 | — |
 
-<img src="../img/wiring_servo.svg" alt="Gambar 13: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)" width="60%">
+<img src="../img/modul_servo_mg996r.png" alt="Gambar 15: Foto motor servo MG996R beserta aksesoris horn dan sekrup bawaan" width="45%">
 
-*Gambar 13: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)*
+*Gambar 15: Foto motor servo MG996R beserta aksesoris horn dan sekrup bawaan*
+
+<img src="../img/wiring_servo.svg" alt="Gambar 16: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)" width="60%">
+
+*Gambar 16: Wiring motor servo ke ESP32 (sinyal ke GPIO 13, daya servo dan GND ke pin 5V dan GND ESP32)*
 
 **`platformio.ini`:**
 ```ini
@@ -734,9 +746,13 @@ Mahasiswa mampu memahami prinsip kerja ESC sebagai pengendali motor brushless, s
 | ESC — Power input (+ / −) | 12V / GND (dari power eksternal) | Jalur daya utama motor, **terpisah** dari power ESP32 |
 | ESC — 3 kabel fasa output (A, B, C) | 3 kabel Motor Brushless (BLDC) | Menukar 2 dari 3 kabel fasa akan membalik arah putar motor |
 
-<img src="../img/wiring_esc_bldc.png" alt="Gambar 14: Diagram wiring ESC, motor brushless (BLDC), dan baterai ke ESP32" width="60%">
+<img src="../img/modul_esc_bldc.png" alt="Gambar 17: Foto ESC 40A beserta motor brushless (BLDC)" width="55%">
 
-*Gambar 14: Diagram wiring ESC, motor brushless (BLDC), dan baterai ke ESP32*
+*Gambar 17: Foto ESC 40A beserta motor brushless (BLDC)*
+
+<img src="../img/wiring_esc_bldc.png" alt="Gambar 18: Diagram wiring ESC, motor brushless (BLDC), dan baterai ke ESP32" width="60%">
+
+*Gambar 18: Diagram wiring ESC, motor brushless (BLDC), dan baterai ke ESP32*
 
 **`platformio.ini`:**
 ```ini
@@ -747,9 +763,9 @@ framework = arduino
 monitor_speed = 115200
 ```
 
-<img src="../img/peringatan_bldc.png" alt="Gambar 15: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC" width="40%">
+<img src="../img/peringatan_bldc.png" alt="Gambar 19: Peringatan keselamatan saat menangani motor brushless (BLDC) — jangan pegang bagian body maupun shaft, pegang bagian kaki BLDC" width="40%">
 
-*Gambar 15: Peringatan keselamatan*
+*Gambar 19: Peringatan keselamatan*
 
 **Langkah Kerja:**
 1. Rangkai ESC dan motor ke ESP32 sesuai skema di atas (pastikan switch daya 12V eksternal di modul masih dalam posisi mati/OFF)
