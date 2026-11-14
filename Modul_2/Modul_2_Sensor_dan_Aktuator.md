@@ -371,9 +371,9 @@ Mahasiswa mampu mengimplementasikan kontrol kecepatan dan arah putar motor DC me
 
 *Gambar 11: Foto motor DC gearbox dengan encoder (kabel daya merah/hitam dan kabel encoder warna-warni)*
 
-<img src="../img/wiring_motor_dc_l298n.svg" alt="Gambar 12: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)" width="60%">
+<!-- <img src="../img/wiring_motor_dc_l298n.svg" alt="Gambar 12: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)" width="60%">
 
-*Gambar 12: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)*
+*Gambar 12: Contoh wiring motor DC via driver L298N dikendalikan joystick (nomor GPIO pada gambar ilustratif, ikuti tabel di atas untuk pin yang sesuai kode)* -->
 
 **`platformio.ini`:**
 ```ini
