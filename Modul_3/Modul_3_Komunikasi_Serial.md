@@ -1027,9 +1027,11 @@ void loop() {
 
 **Kontrol Multi Device**
 
-Sebuah rancangan monitoring getaran 2 titik mesin butuh 2 sensor IMU dan 2 layar OLED sekaligus (4 komponen), namun pada ESP32 yang dipakai hanya tersisa 3 GPIO bebas. Tentukan cara menyambungkan seluruh komponen tanpa menambah pin, lalu buktikan lewat simulasi — tiap IMU wajib tampil di OLED pasangannya sendiri.
 
-- Kumpulkan tangkapan layar dari hasil simulasi beserta source code-nya. Simulasi dapat dilakukan pada website seperti Wokwi.
+Buat simulasi dengan 2 Sensor IMU MPU6050 dan 2 OLED I2C, dimana 1 OLED menampilkal output dari 1 IMU. Gunakan I2C untuk menyambungkan 4 device tersebut sekaligus.
+
+- Kumpulkan tangkapan layar dari hasil simulasi beserta source code-nya. (Simulasi dapat dilakukan menggunakan wokwi, cirkit, thinkercad, atau aplikasi simulasi lain yang mendukung mikrokontroler ESP32).
+
 
 
 **Pertanyaan Analisis:**
