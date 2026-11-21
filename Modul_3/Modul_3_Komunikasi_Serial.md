@@ -125,7 +125,7 @@ Selain untuk sensor, jalur SPI juga dapat digunakan untuk menghubungkan ESP32 ke
 
 ### PERCOBAAN 1 — Komunikasi UART Antar ESP32
 
-### LAKUKAN PERCOBAAN INI DENGAN KOLABORASI BERSAMA KELOMPOK LAIN DISEBELAHMU (Baca Langkah Kerja)
+### LAKUKAN PERCOBAAN INI DENGAN KOLABORASI BERSAMA KELOMPOK LAIN DI SEBELAHMU (Baca Langkah Kerja)
 
 **Skema Rangkaian:**
 
@@ -222,9 +222,9 @@ Mahasiswa mampu mengimplementasikan interfacing lebih dari satu modul I2C nyata 
 
 | Komponen | Pin ESP32 | Keterangan |
 |---|---|---|
-| OLED (SSD1306/SH1106) — SDA | GPIO 21 | Bus I2C default — **dibagi bersama** dengan MPU6500 |
-| OLED (SSD1306/SH1106) — SCL | GPIO 22 | Bus I2C default — **dibagi bersama** dengan MPU6500 |
-| OLED (SSD1306/SH1106) — VCC / GND | 3.3V / GND | Periksa datasheet modul (umumnya toleran 3.3–5V) |
+| OLED — SDA | GPIO 21 | Bus I2C default — **dibagi bersama** dengan MPU6500 |
+| OLED — SCK | GPIO 22 | Bus I2C default — **dibagi bersama** dengan MPU6500 |
+| OLED — VCC / GND | 3.3V / GND | Periksa datasheet modul (umumnya toleran 3.3–5V) |
 | MPU6500 — SDA (pin SDI pada mode SPI) | GPIO 21 | Bus I2C default — pin **sama persis** dengan OLED |
 | MPU6500 — SCL (pin SCLK pada mode SPI) | GPIO 22 | Bus I2C default — pin **sama persis** dengan OLED |
 | MPU6500 — AD0 (pin SDO pada mode SPI) | GND | Mengunci alamat I2C MPU6500 pada `0x68` (jika ke 3.3V menjadi `0x69`) |
@@ -233,7 +233,7 @@ Mahasiswa mampu mengimplementasikan interfacing lebih dari satu modul I2C nyata 
 
 > Kedua perangkat dihubungkan ke **pin SDA dan SCL yang sama** karena memiliki alamat yang berbeda (OLED = `0x3C`, MPU6500 = `0x68`).
 
-<img src="../img/wiring_oled_mpu6500.png" alt="Gambar 7: Wiring OLED dan MPU6500 berbagi bus I2C (SDA/SCL) yang sama pada ESP32" width="60%">
+<img src="../img/wiring_oled_mpu6500.svg" alt="Gambar 7: Wiring OLED dan MPU6500 berbagi bus I2C (SDA/SCL) yang sama pada ESP32" width="60%">
 
 *Gambar 7: Wiring OLED dan MPU6500 berbagi bus I2C (SDA/SCL) yang sama pada ESP32*
 
@@ -249,7 +249,7 @@ lib_deps = olikraus/U8g2@^2.35.0
 
 **Langkah Kerja:**
 1. Rangkai OLED dan MPU6500 pada jalur `SDA` (GPIO 21) dan `SCL` (GPIO 22) yang sama sesuai skema di atas (pastikan pin `CS/NCS` MPU6500 terhubung ke `3.3V` dan `AD0` ke `GND`)
-2. Tulis kode program di bawah pada `src/main.cpp`. Sesuaikan bagian `PILIH CHIP OLED` (`OLED_SSD1306` atau `OLED_SH1106`) dengan tipe layar OLED yang digunakan, lalu klik **Build** dan **Upload**
+2. Tulis kode program di bawah pada `src/main.cpp`. lalu **Build** dan **Upload**
 3. Buka Serial Monitor (`115200` baud)
 4. Gerakkan dan miringkan sensor MPU6500, lalu amati perubahan nilai akselerometer (`AX, AY, AZ`) dan giroskop (`GX, GY, GZ`) yang tampil bersamaan pada layar OLED dan Serial Monitor
 
@@ -473,12 +473,12 @@ Mahasiswa mampu mengimplementasikan komunikasi SPI untuk membaca data akselerome
 | Komponen | Pin ESP32 | Keterangan |
 |---|---|---|
 | MPU6500 — CS/NCS | GPIO 5 | Chip Select SPI |
-| MPU6500 — MOSI (pin SDA/SDI) | GPIO 23 | Jalur kirim data dari ESP32 ke sensor |
-| MPU6500 — MISO (pin AD0/SDO) | GPIO 19 | Jalur terima data dari sensor ke ESP32 |
-| MPU6500 — SCK (pin SCL/SCLK) | GPIO 18 | Jalur clock SPI |
+| MPU6500 — MOSI (pin SDA) | GPIO 23 | Jalur kirim data dari ESP32 ke sensor |
+| MPU6500 — MISO (pin AD0) | GPIO 19 | Jalur terima data dari sensor ke ESP32 |
+| MPU6500 — SCK (pin SCL) | GPIO 18 | Jalur clock SPI |
 | MPU6500 — VCC / GND | 3.3V / GND | Suplai daya sensor (3.3V) |
 
-<img src="../img/wiring_mpu6500_spi.png" alt="Gambar 8: Diagram wiring modul MPU6500 ke ESP32 melalui antarmuka SPI (CS=GPIO 5, SCK=GPIO 18, MISO/AD0=GPIO 19, MOSI/SDA=GPIO 23)" width="60%">
+<img src="../img/wiring_mpu6500_spi.svg" alt="Gambar 8: Diagram wiring modul MPU6500 ke ESP32 melalui antarmuka SPI (CS=GPIO 5, SCK=GPIO 18, MISO/AD0=GPIO 19, MOSI/SDA=GPIO 23)" width="60%">
 
 *Gambar 8: Diagram wiring modul MPU6500 ke ESP32 melalui antarmuka SPI (CS=GPIO 5, SCK=GPIO 18, MISO/AD0=GPIO 19, MOSI/SDA=GPIO 23)*
 
@@ -495,8 +495,9 @@ monitor_speed = 115200
 **Langkah Kerja:**
 1. Rangkai modul MPU6500 ke ESP32 melalui jalur SPI sesuai skema di atas
 2. Tulis kode program di bawah pada `src/main.cpp`, lalu klik **Build** dan **Upload**
-3. Buka Serial Monitor (`115200` baud) dan pastikan muncul `WHO_AM_I: 0x70` serta pesan `"MPU6500 SPI siap!"`
-4. Gerakkan sensor MPU6500, lalu amati nilai akselerometer, giroskop, serta **waktu baca 14 byte** (dalam `us`) pada Serial Monitor
+3. Buka Serial Monitor (`115200` baud)
+4. Gerakkan sensor MPU6500, lalu amati nilai akselerometer, giroskop pada Serial Monitor.
+5. Kemudian buka juga Serial Plotter untuk melihat grafik dari IMU.
 
 **Kode Program (Baca Register MPU6500 via SPI):**
 ```cpp
@@ -630,13 +631,14 @@ void loop() {
     float gy = gyRaw / 131.0f;
     float gz = gzRaw / 131.0f;
 
-    Serial.printf(
-        "ACC[g] X:%+.3f Y:%+.3f Z:%+.3f | "
-        "GYRO[dps] X:%+.2f Y:%+.2f Z:%+.2f\n",
-        ax, ay, az, gx, gy, gz
-    );
-
-    Serial.printf("Waktu baca 14 byte (SPI.transfer): %lu us\n", elapsed);
+    Serial.print(">");
+    Serial.print("AX:"); Serial.print(ax); Serial.print(",");
+    Serial.print("AY:"); Serial.print(ay); Serial.print(",");
+    Serial.print("AZ:"); Serial.print(az); Serial.print(",");
+    Serial.print("GX:"); Serial.print(gx); Serial.print(",");
+    Serial.print("GY:"); Serial.print(gy); Serial.print(",");
+    Serial.print("GZ:"); Serial.print(gz);
+    Serial.println();
 
     delay(100);
 }
@@ -651,6 +653,7 @@ void loop() {
 | `reg \| 0x80` dan `reg & 0x7F` | Aturan pada MPU6500: bit pertama alamat diset `1` (`\| 0x80`) saat ingin **membaca** data, dan `0` (`& 0x7F`) saat ingin **menulis** pengaturan |
 | `SPI.transfer(...)` | Mengirim dan menerima 1 byte data setiap kali dipanggil (dipanggil berulang di dalam `for` untuk membaca 14 byte data sensor) |
 | `elapsed = micros() - start` | Mengukur waktu (mikrodetik) yang dibutuhkan untuk membaca 14 byte data sensor dengan metode SPI biasa |
+| `Serial.print(">"); ... Serial.println();` | Mencetak data dalam format `>Nama:nilai,Nama:nilai,...` yang dikenali Serial Plotter, sehingga `AX`, `AY`, `AZ`, `GX`, `GY`, `GZ` dapat diplot sebagai 6 data series sekaligus |
 
 ---
 
@@ -660,7 +663,7 @@ void loop() {
 Mahasiswa mampu mengimplementasikan pembacaan data IMU MPU6500 menggunakan fitur **DMA (Direct Memory Access)** pada jalur SPI dan mengamati perbandingannya dengan pembacaan SPI biasa pada Percobaan 3.
 
 **Skema Rangkaian:**
-### Gunakan rangkaian MPU6500 yang **sama persis** dengan **Percobaan 3** (`CS = GPIO 5`, `MOSI = GPIO 23`, `MISO = GPIO 19`, `SCK = GPIO 18` — lihat **Gambar 8**).
+#### Gunakan rangkaian MPU6500 yang **sama persis** dengan **Percobaan 3** (`CS = GPIO 5`, `MOSI = GPIO 23`, `MISO = GPIO 19`, `SCK = GPIO 18` — lihat **Gambar 8**).
 
 **`platformio.ini`:**
 ```ini
@@ -675,8 +678,8 @@ monitor_speed = 115200
 **Langkah Kerja:**
 1. Gunakan rangkaian MPU6500 dari Percobaan 3 tanpa mengubah posisi kabel
 2. Tulis kode program di bawah pada `src/main.cpp`, lalu klik **Build** dan **Upload**
-3. Buka Serial Monitor (`115200` baud) dan pastikan muncul `WHO_AM_I: 0x70` serta pesan `"MPU6500 SPI DMA ready!"`
-4. Amati pembacaan nilai akselerometer, giroskop, serta **waktu baca 14 byte (DMA)** pada Serial Monitor, lalu bandingkan dengan hasil pada Percobaan 3
+3. Buka Serial Monitor (`115200` baud) dan pastikan muncul.
+4. Amati pembacaan nilai akselerometer, giroskop.
 
 **Kode Program (Pembacaan Burst MPU6500 via SPI Master + DMA):**
 ```cpp
@@ -883,15 +886,16 @@ void loop() {
     float gy = gyRaw / 131.0f;
     float gz = gzRaw / 131.0f;
 
-    Serial.printf(
-        "ACC[g] X:%+.3f Y:%+.3f Z:%+.3f | "
-        "GYRO[dps] X:%+.2f Y:%+.2f Z:%+.2f\n",
-        ax, ay, az, gx, gy, gz
-    );
+    Serial.print(">");
+    Serial.print("AX:"); Serial.print(ax); Serial.print(",");
+    Serial.print("AY:"); Serial.print(ay); Serial.print(",");
+    Serial.print("AZ:"); Serial.print(az); Serial.print(",");
+    Serial.print("GX:"); Serial.print(gx); Serial.print(",");
+    Serial.print("GY:"); Serial.print(gy); Serial.print(",");
+    Serial.print("GZ:"); Serial.print(gz);
+    Serial.println();
 
-    Serial.printf("Waktu baca 14 byte (DMA): %lu us\n", elapsed);
-
-    delay(100);
+    delay(50);
 }
 ```
 
@@ -917,14 +921,14 @@ Mahasiswa mampu mengimplementasikan komunikasi jaringan Ethernet menggunakan mod
 | W5500 | Pin ESP32 | Keterangan |
 |---|---|---|
 | SCK | GPIO 18 | Jalur clock SPI |
-| MISO | GPIO 19 | Jalur terima data SPI |
-| MOSI | GPIO 23 | Jalur kirim data SPI |
+| MI (MISO) | GPIO 19 | Jalur terima data SPI |
+| MO (MOSI) | GPIO 23 | Jalur kirim data SPI |
 | CS/SS | GPIO 5 | Chip Select |
 | RST | 3.3V | Reset (ditarik ke 3.3V agar modul aktif) |
 | VCC | 3.3V | Suplai daya 3.3V |
 | GND | GND | Ground |
 
-<img src="../img/wiring_w5500_percobaan5.png" alt="Gambar 9: Diagram wiring modul W5500 ke ESP32 melalui jalur SPI" width="60%">
+<img src="../img/wiring_w5500_percobaan5.svg" alt="Gambar 9: Diagram wiring modul W5500 ke ESP32 melalui jalur SPI" width="60%">
 
 *Gambar 9: Diagram wiring modul W5500 ke ESP32 melalui jalur SPI*
 
@@ -951,16 +955,24 @@ Kode program memberi ESP32 alamat IP `192.168.1.177`. Agar komputer bisa berkomu
 
 ![Gambar 10: Pengaturan IP manual pada Settings Windows 11](../img/network_internet_win.png)
 
+*Gambar 10: Pengaturan IP manual pada Settings Windows*
+
 ![Gambar 11: Pengaturan IP manual melalui Control Panel Windows](../img/ip_setting_win.png)
 
-> **Catatan:** Setelah praktikum selesai, kembalikan pengaturan **IP assignment** ke **Automatic (DHCP)** agar komputer dapat terhubung kembali ke jaringan seperti biasa.
+*Gambar 11: Pengaturan IP manual melalui Control Panel Windows*
+
+![Contoh Ping Yang Berhasil, misal kalian ga tahu](../img/ping_ke_192_168_1_177.png)
+
+*Contoh Ping Yang Berhasil, misal kalian ga tahu*
+
+
 
 **Langkah Kerja:**
-1. Rangkai modul W5500 ke ESP32 sesuai skema di atas, lalu hubungkan kabel RJ45 dari W5500 ke port Ethernet komputer
+1. Rangkai modul W5500 ke ESP32 sesuai skema di atas, lalu hubungkan kabel LAN RJ45 dari W5500 ke port Ethernet Laptop kalian
 2. Atur alamat IP komputer menjadi `192.168.1.10` mengikuti panduan di atas
 3. Tulis kode program di bawah pada `src/main.cpp`, lalu klik **Build** dan **Upload**
 4. Buka Serial Monitor (`115200` baud) dan pastikan muncul pesan `"ESP32 + W5500 siap. IP: 192.168.1.177"`
-5. Buka **Command Prompt (CMD)** di komputer, jalankan perintah `ping 192.168.1.177`, lalu amati balasan (*Reply*) dari W5500
+5. Buka **Command Prompt (CMD)** di Laptop, jalankan perintah `ping 192.168.1.177`, lalu amati hasilnya.
 
 **Kode Program (ESP32 + W5500 — Merespons Ping dari PC):**
 ```cpp
