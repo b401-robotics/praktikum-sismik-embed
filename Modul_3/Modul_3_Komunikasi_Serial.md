@@ -125,7 +125,7 @@ Selain untuk sensor, jalur SPI juga dapat digunakan untuk menghubungkan ESP32 ke
 
 ### PERCOBAAN 1 — Komunikasi UART Antar ESP32
 
-### LAKUKAN PERCOBAAN INI DENGAN KOLABORASI BERSAMA KELOMPOK LAIN DI SEBELAHMU (Baca Langkah Kerja)
+#### LAKUKAN PERCOBAAN INI BERSAMA KELOMPOK LAIN DI SEBELAHMU
 
 **Skema Rangkaian:**
 
@@ -152,11 +152,12 @@ monitor_speed = 115200
 ```
 
 **Langkah Kerja:**
-1. Salah satu kelompok menjadi Transmitter dan yang lain menjadi receiver. kemudian percobaan diulang lagi dengan berganti posisi, yang tadinya receiver menjadi transmitter dan sebaliknya.
-2. Upload program sesuai dengan peran kelompokmu. 
-3. Hubungkan kedua board sesuai skema di atas: `TX2` (GPIO 17) ke `RX2` (GPIO 16) secara menyilang, serta satukan `GND` kedua board
-4. Buka Serial Monitor (`115200` baud) pada Receiver
-5. Amati pesan `"Hello ESP32!"` yang dikirim oleh Transmitter dan diterima oleh Receiver setiap 1 detik
+#### Salah satu kelompok menjadi Transmitter dan yang lain menjadi Receiver. kemudian percobaan diulang lagi dengan berganti posisi, yang tadinya Receiver menjadi Transmitter dan sebaliknya.
+
+1. Upload program sesuai dengan peran kelompokmu. 
+2. Hubungkan kedua board sesuai skema di atas: `TX2` (GPIO 17) ke `RX2` (GPIO 16) secara menyilang, serta satukan `GND` kedua board
+3. Buka Serial Monitor (`115200` baud) pada Receiver
+4. Amati pesan `"Hello ESP32!"` yang dikirim oleh Transmitter dan diterima oleh Receiver setiap 1 detik
 
 **Kode Program (ESP32 Transmitter):**
 ```cpp
@@ -678,7 +679,7 @@ monitor_speed = 115200
 **Langkah Kerja:**
 1. Gunakan rangkaian MPU6500 dari Percobaan 3 tanpa mengubah posisi kabel
 2. Tulis kode program di bawah pada `src/main.cpp`, lalu klik **Build** dan **Upload**
-3. Buka Serial Monitor (`115200` baud) dan pastikan muncul.
+3. Buka Serial Monitor (`115200` baud).
 4. Amati pembacaan nilai akselerometer, giroskop.
 
 **Kode Program (Pembacaan Burst MPU6500 via SPI Master + DMA):**
