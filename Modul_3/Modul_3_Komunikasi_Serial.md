@@ -165,16 +165,23 @@ monitor_speed = 115200
 
 HardwareSerial UART(2);
 
+int counter = 0;
+
 void setup() {
     Serial.begin(115200);
-    UART.begin(115200, SERIAL_8N1, 16, 17); // RX, TX
+    UART.begin(115200, SERIAL_8N1, 16, 17);
 
-    Serial.println("ESP32 Transmitter");
+    Serial.println("ESP32 Transmitter Started");
 }
 
 void loop() {
-    UART.println("Hello ESP32!");
-    Serial.println("Data terkirim");
+    counter++;
+
+    UART.print("Data dari transmitter: ");
+    UART.println(counter);
+
+    Serial.print("Data terkirim: ");
+    Serial.println(counter);
 
     delay(1000);
 }
